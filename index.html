@@ -277,11 +277,29 @@
 
 		function download() {
 			var canvas = document.getElementById("picOut");
-			var link = document.createElement('a');
-			link.href = canvas.toDataURL('png'); // Convert the canvas to a data URL
-			link.download = 'Lapsus.png'; // Set the filename for the download //TODO
-			link.click(); // Trigger the download
+
+			// Check if the HTML element exists
+			if (!canvas) {
+				alert("No image to download. Please merge an image first.");
+				return;
+			}
+
+			// Ask the user where to save the file
+			var fileName = prompt("Enter the file name (e.g., Lapsus.png):");
+			if (fileName) {
+				// Convert the canvas to a data URL
+				var dataURL = canvas.toDataURL('png');
+
+				// Create a temporary anchor element
+				var link = document.createElement('a');
+				link.href = dataURL;
+				link.download = fileName; // Set the filename for the download
+
+				// Trigger the download
+				link.click();
+			}
 		}
+
 	</script>
 </body>
 
