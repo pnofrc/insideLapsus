@@ -278,7 +278,7 @@
 		function download() {
 			var canvas = document.getElementById("picOut");
 			var link = document.createElement('a');
-			link.href = canvas.toDataURL(); // Convert the canvas to a data URL
+			link.href = canvas.toDataURL('png'); // Convert the canvas to a data URL
 			link.download = 'Lapsus.png'; // Set the filename for the download //TODO
 			link.click(); // Trigger the download
 		}
