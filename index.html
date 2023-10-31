@@ -18,7 +18,7 @@
 	<!-- <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script> -->
 	<script src="./js/swiper-bundle.min.js"></script>
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" /> -->
 	<link rel="stylesheet" href="./css/swiper-bundle.min.css" />
 	<link rel="stylesheet" href="./css/style.css" />
 
@@ -31,7 +31,7 @@
 	<div id="cameraInput" class="container">
 
 		<div class="hide-input">
-			<input type="file" id="fgFile" multiple="false" onChange="frontimg()">
+			<input type="file" accept="image/*" capture="camera"  id="fgFile" multiple="false" onChange="frontimg()">
 			<button>Scatta la foto!</button>
 		</div>
 
@@ -126,7 +126,7 @@
 
 			var file = fileInput.files[0];
 
-			if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
+			// if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
 				const reader = new FileReader();
 
 				reader.onload = function () {
@@ -139,42 +139,42 @@
 
 				reader.readAsDataURL(file);
 
-			} else if (file && file.type === 'image/heic') {
-				heic2any({ blob: file })
-					.then(function (resultBlob) {
-						const reader = new FileReader();
+			// } else if (file && file.type === 'image/heic') {
+			// 	heic2any({ blob: file })
+			// 		.then(function (resultBlob) {
+			// 			const reader = new FileReader();
 
-						reader.onload = function () {
-							const dataURL = reader.result;
-							let imgNew = new Image();
+			// 			reader.onload = function () {
+			// 				const dataURL = reader.result;
+			// 				let imgNew = new Image();
 
-							imgNew.onload = function () {
-								canvas.style.display = "block";
-								const canvasContext = canvas.getContext('2d');
-								canvas.width = imgNew.width;
-								canvas.height = imgNew.height;
-								canvasContext.drawImage(imgNew, 0, 0);
-								commands.style.display = "flex";
-							};
+			// 				imgNew.onload = function () {
+			// 					canvas.style.display = "block";
+			// 					const canvasContext = canvas.getContext('2d');
+			// 					canvas.width = imgNew.width;
+			// 					canvas.height = imgNew.height;
+			// 					canvasContext.drawImage(imgNew, 0, 0);
+			// 					commands.style.display = "flex";
+			// 				};
 
-							imgNew.src = dataURL;
-							imgFG = new SimpleImage(dataURL);
-						};
+			// 				imgNew.src = dataURL;
+			// 				imgFG = new SimpleImage(dataURL);
+			// 			};
 
-						reader.readAsDataURL(resultBlob);
-
-
+					// 	reader.readAsDataURL(resultBlob);
 
 
-						canvas.style.display = "block";
-
-					})
-					.catch(function (error) {
-						console.error('HEIC conversion failed: ', error);
-					});
 
 
-			}
+						// canvas.style.display = "block";
+
+					// })
+					// .catch(function (error) {
+					// 	console.error('HEIC conversion failed: ', error);
+					// });
+
+
+			// }
 
 			fileInput.style.display = "none"
 			shooting.style.display = "none"
