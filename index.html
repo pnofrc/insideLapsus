@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>
+		InsideLapsus
+        </title>
+        <meta name="description" content="App del Liceo Artistico Preziosissimo Sangue ;)">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+		<script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.js"></script>
+
+	<script src="https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js"> </script> 
+
+  	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+
+		<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+	<style> 
+
+:root{
+	--primary: rgb(103,200,77);
+	--secondary: rgb(58,58,58);
+}
+        body,html{
+            width: 100vw;
+            height: 100%;
+			/* overflow-y: hidden; */
+            margin: 0;
+            padding: 0;
+			font-family:'Trebuchet MS';
+            background: var(--secondary);
+			color: var(--primary) !important;
+        }
+
+		button{
+color: var(--secondary) !important;
+		}
+
+		h1{
+			font-size: 2em;
+			text-align: center;
+			
+		}
+
+		canvas { 
+			/* border: 1px solid var(--primary); */
+			max-width: 80%;
+			/* width: 450px; 
+			height: 300px; 
+			margin: 30px;  */
+		} 
+
+		.container{
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-around;
+			height: 70%;
+			gap: 20px
+		}
+
+
+		.commands{
+			    padding-bottom: 30px;
+			/* flex-direction: column; */
+			justify-content: space-evenly;
+			width: fit-content;
+			gap: 20px;
+		}
+
+		.uno{
+			display: none;
+		}
+
+		.due{
+			display: flex;
+			align-items: center;
+
+		}
+
+		button, input[type=file]{
+			font-size: 1rem;
+			border-radius: 30px;
+			padding: 10px 16px;
+			color: white;
+			background-color: var(--primary);
+			border: none;
+		}
+
+		.hide-input{
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			/* border: solid; */
+			line-height: 0;
+		}
+
+		input[type=file] {
+			opacity: 0;
+			width: 50%;
+			height: 100px;
+			position: absolute;
+		}
+		
+
+
+		#pic1{
+			display: none;
+		}
+
+
+
+	.swiper {
+      width: 85%;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+
+
+
+	#selectBack{
+		display: none;
+		gap: 20px;
+    	height: fit-content;
+	}
+
+	#out{
+		text-align: center;
+		display: none;
+	}
+
+	#out div{
+		    width: 90%;
+			margin: 5%
+	}
+
+
+	.tre{
+		display: flex;
+		 width: 100%;
+		
+	}
+
+
+
+#copying{
+	border: solid 1px black;
+	padding: 1rem;
+}
+
+.swiper-button-prev:after, .swiper-rtl .swiper-button-next:after,
+.swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {
+    color: var(--primary);
+}
+
+	</style> 
+</head> 
+
+<body> 
+	<h1>InsideLapsus</h1>
+
+
+	<div id="cameraInput" class="container">
+
+		<div class="hide-input">
+			<input type="file"
+			id="fgFile" multiple="false"
+			onChange="frontimg()"> 
+			<button>Scatta la foto!</button>
+		</div>
+
+		<canvas id="pic1"></canvas> 
+		
+
+		<div class="commands uno">
+			<button  onclick="document.getElementById('fgFile').click();">Scatta di nuovo</button>
+			<button onclick="document.getElementById('cameraInput').style.display='none'; document.getElementById('selectBack').style.display='flex'">Va bene</button>
+
+		</div>
+		
+	</div>
+
+
+
+
+	<div id="selectBack" class="container">
+
+		<!-- Swiper -->
+		<div class="swiper mySwiper">
+			<div class="swiper-wrapper">
+				
+			</div>
+			 <div class="swiper-button-next"></div>
+    		<div class="swiper-button-prev"></div>
+		</div>
+
+		
+
+
+		<div class="commands due">
+			<button onclick="randomSlide()">Sfondo random</button>
+			<button onclick="document.getElementById('cameraInput').style.display='flex'; document.getElementById('selectBack').style.display='none'">Indietro</button>
+			<button onClick="merge()">Fondi!</button>
+		</div>
+	</div>
+
+
+	
+	<div id="out" class="container">
+
+		<canvas id="picOut" ></canvas> 
+
+		<div>
+			<p>
+				Puoi scaricare l'immagine, o cambiare lo sfondo. Puoi salvarla nella galleria o aprirla tramite l'app di instagram.<br>
+				Se vuoi condividerla non esitare a usare i nostri tag!<br><br>
+				Puoi cliccare nel riquadro per copiare e incollare.
+			</p>
+		<p id="copying">
+			#insidelapsus #preziosine #openday
+		</p>	
+		</div>
+
+		<div class="commands tre">
+			<button onclick="download()">Scarica!</button>
+			<button onclick="back()">Cambia..</button>
+		</div>
+
+	</div>
+
+
+
+
+	<script type="text/javascript"> 
+
+
+
+			// SWIPER
+			var swiper = new Swiper(".mySwiper", {
+		   navigation: {
+				nextEl: ".swiper-button-next",
+				prevEl: ".swiper-button-prev",
+			},
+		});
+
+
+
+		var imgFG = null; 
+		var imgBG = null; 
+		var currentBackground = null
+
+		// This function takes forward image as input 
+		function frontimg() {
+			var shooting = document.querySelector(".hide-input");
+			var commands = document.querySelector(".commands.uno");
+			var fileInput = document.getElementById("fgFile");
+			var canvas = document.getElementById("pic1");
+
+			var file = fileInput.files[0];
+
+			if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
+				const reader = new FileReader();
+
+				reader.onload = function () {
+				const dataURL = reader.result;
+				imgFG = new SimpleImage(dataURL);
+				canvas.style.display = "block";
+				imgFG.drawTo(canvas);
+				commands.style.display = "flex";
+				};
+
+				reader.readAsDataURL(file);
+				
+			} else if (file && file.type === 'image/heic') {
+						heic2any({ blob: file })
+							.then(function (resultBlob) {
+								const reader = new FileReader();
+
+								reader.onload = function () {
+									const dataURL = reader.result;
+									let imgNew = new Image();
+
+									imgNew.onload = function () {
+										canvas.style.display = "block";
+										const canvasContext = canvas.getContext('2d');
+										canvas.width = imgNew.width;
+										canvas.height = imgNew.height;
+										canvasContext.drawImage(imgNew, 0, 0);
+										commands.style.display = "flex";
+									};
+
+									imgNew.src = dataURL;
+									imgFG = new SimpleImage(dataURL);
+								};
+
+								reader.readAsDataURL(resultBlob);
+
+
+
+								
+								canvas.style.display = "block";
+								
+							})
+							.catch(function (error) {
+								console.error('HEIC conversion failed: ', error);
+							});
+
+							// imgFG.drawTo(canvas);
+
+			}	
+
+			fileInput.style.display = "none"
+			shooting.style.display = "none"
+
+			canvas.style.display = "block"
+			commands.style.display = "flex"
+		}
+
+
+		// This function takes background image as output 
+		function backimg(input) { 
+			var fileInput = document.getElementById("bgFile"); 
+			imgBG = new SimpleImage(input); 
+		} 
+
+		let bckPics = ['PHOTO-2023-10-24-08-18-18.jpg', 'muSEAc.jpg', 'PHOTO-2023-10-24-08-12-56 2.jpg', 'PHOTO-2023-10-24-08-12-46.jpg', 'PHOTO-2023-10-24-08-14-14 3.jpg', 'PHOTO-2023-10-24-08-14-14 2.jpg', 'PHOTO-2023-10-24-08-12-57.jpg', 'PHOTO-2023-10-24-08-10-52.jpg', 'rotation.jpg', 'PHOTO-2023-10-24-08-10-53.jpg', 'PHOTO-2023-10-24-08-12-50 2.jpg', 'toowhite.jpg', 'PHOTO-2023-10-24-08-12-56.jpg', 'PHOTO-2023-10-24-08-06-09.jpg', 'PHOTO-2023-10-24-08-12-55 copia.jpg', 'PHOTO-2023-10-24-08-14-35.jpg', 'b4bae3a0-0112-49c5-ace2-67c59b42bb5c.jpg', 'PHOTO-2023-10-24-08-12-55 2.jpg', 'cleardark.jpg', 'PHOTO-2023-10-24-08-10-23.jpg', '823e32e7-1f98-464b-ab6d-ac31bc4a4f9d.jpg', '35cf4f49-9665-4b22-bba1-ec4759fa4e22.jpg', 'barbieF1.jpg', 'PHOTO-2023-10-24-08-08-57.jpg', 'PHOTO-2023-10-24-08-09-15.jpg', 'PHOTO-2023-10-24-08-09-28.jpg', 'a5848d9c-675c-40d3-a251-828c425b5733.jpg', 'PHOTO-2023-10-24-08-12-30.jpg', 'mar-s.jpg', 'PHOTO-2023-10-24-08-18-41.jpg', 'PHOTO-2023-10-24-08-10-25.jpg', 'colombo 5a 2.jpg', 'PHOTO-2023-10-24-08-10-24.jpg', 'PHOTO-2023-10-24-08-07-28.jpg', 'PHOTO-2023-10-24-08-18-40.jpg', '36281ad6-9e12-4755-a1de-0a5d86716429.jpg', 'colombo 5a 1.jpg', '82df0e52-78ab-4446-97ac-d3f971b3b8a5.jpg', 'PHOTO-2023-10-24-08-07-32.jpg', 'sfondo green screen Zoccolan-3.jpg', 'sfondo green screen Zoccolan-2.jpg', 'PHOTO-2023-10-24-08-18-18 2.jpg', 'PHOTO-2023-10-24-08-07-31.jpg', '016d4186-6cec-47e1-ad7e-c77f1dffaffb.jpg', 'sfondo green screen Zoccolan-1.jpg', 'PHOTO-2023-10-24-08-10-00.jpg', 'PHOTO-2023-10-24-08-18-14 copia.jpg', 'PHOTO-2023-10-24-08-12-29.jpg', 'PHOTO-2023-10-24-08-18-40 2.jpg', 'Polycloud.jpg', 'darkred.jpg', 'pixie.jpg', 'darkwhite.jpg', 'PHOTO-2023-10-24-08-07-31 2.jpg', 'PHOTO-2023-10-24-08-18-42 2.jpg', '9870c65d-5ef8-4ea1-ab8c-29544964efa1.jpg', 'stelle a mollo.jpg', 'sfondi 5A-1.jpg', 'music run.jpg', 'PHOTO-2023-10-24-08-13-24.jpg', 'darkgreen.jpg', 'pioggia pesante.jpg', 'PHOTO-2023-10-24-08-06-10.jpg', 'PHOTO-2023-10-24-08-10-53 2.jpg', 'd135ba25-9f4c-4462-b306-f8f6d4cf343e.jpg', 'PHOTO-2023-10-24-08-14-07.jpg', 'lilililla.jpg', 'PHOTO-2023-10-24-08-07-29 3.jpg', 'PHOTO-2023-10-24-08-18-17.jpg', 'flow.jpg', 'PHOTO-2023-10-24-08-18-16.jpg', 'PHOTO-2023-10-24-08-18-14.jpg', 'PHOTO-2023-10-24-08-18-41 2.jpg', 'PHOTO-2023-10-24-08-14-14.jpg', 'PHOTO-2023-10-24-08-07-32 2.jpg', 'PHOTO-2023-10-24-08-17-44.jpg', 'PHOTO-2023-10-24-08-09-44.jpg', 'PHOTO-2023-10-24-08-18-15.jpg', 'PHOTO-2023-10-24-08-12-48.jpg']
+
+		bckPics.forEach(bckPic => {
+			document.querySelector(".swiper-wrapper").innerHTML += `<div class="swiper-slide">
+															<img src="background/${bckPic}" loading="lazy" alt="${bckPic}">
+														</div>`
+		});
+
+		// This function merges both the image and 
+		// produces the resultant image as output 
+		// Implementation of Green Screen Algorithm 
+
+
+		
+	// 	function merge() { 
+
+
+	// 		setTimeout(() => {
+				
+			
+	// 			imgFG.setSize(imgFG.width, imgFG.height)
+
+	// 		backimg("background/"+bckPics[swiper.realIndex])
+			
+	// 		var picOut = document.getElementById("picOut"); 
+
+	// 		 try {
+    //     var outputImage = new SimpleImage(imgFG.getWidth(), imgFG.getHeight());
+
+    //     for (var pixel of imgFG.values()) {
+    //         if (pixel.getGreen() > pixel.getRed() + pixel.getBlue()) {
+    //             var x = pixel.getX();
+    //             var y = pixel.getY();
+    //             var newPixel = imgBG.getPixel(x, y);
+    //             outputImage.setPixel(x, y, newPixel);
+    //         } else {
+    //             outputImage.setPixel(pixel.getX(), pixel.getY(), pixel);
+    //         }
+    //     }
+
+    //     outputImage.drawTo(picOut);
+    // } catch (error) {
+    //    alert('ERRORE! Ricomincia o rifondi :(')
+    //     return;
+    // }
+
+
+	// 		document.getElementById('selectBack').style.display='none'
+	// 		document.getElementById("out").style.display = "block"
+
+	// 	}, 1500);
+			
+	// 	} 
+
+	function merge() {
+  // Load the selected background image
+  backimg("background/" + bckPics[swiper.realIndex]);
+
+  // Get the canvas for the output image
+  var picOut = document.getElementById("picOut");
+
+  try {
+    // Calculate the scaling factor based on height
+    var scale = imgBG.getHeight() / imgFG.getHeight();
+
+    // Resize the foreground image to match the background height
+    var newWidth = Math.round(imgFG.getWidth() * scale);
+    imgFG.setSize(newWidth, imgBG.getHeight());
+
+    var outputImage = new SimpleImage(imgBG.getWidth(), imgBG.getHeight());
+
+    for (var pixel of imgFG.values()) {
+      if (pixel.getGreen() > pixel.getRed() + pixel.getBlue()) {
+        var x = Math.round((pixel.getX() / imgFG.getWidth()) * imgBG.getWidth());
+        var y = pixel.getY();
+        var newPixel = imgBG.getPixel(x, y);
+        outputImage.setPixel(x, y, newPixel);
+      } else {
+        outputImage.setPixel(
+          Math.round((pixel.getX() / imgFG.getWidth()) * imgBG.getWidth()),
+          pixel.getY(),
+          pixel
+        );
+      }
+    }
+
+    outputImage.drawTo(picOut);
+  } catch (error) {
+    alert("ERRORE! Ricomincia o rifondi :(");
+    return;
+  }
+
+  document.getElementById("selectBack").style.display = "none";
+  document.getElementById("out").style.display = "block";
+}
+
+
+		
+
+
+		function randomSlide(){
+			let rn = Math.floor(Math.random() * bckPics.length)
+			swiper.slideTo(rn)
+		}
+
+
+		const span = document.querySelector("#copying");
+
+		span.onclick = function() {
+		document.execCommand("copy");
+		span.style.color = 'white'
+		}
+
+		span.addEventListener("copy", function(event) {
+		event.preventDefault();
+		if (event.clipboardData) {
+			event.clipboardData.setData("text/plain", span.textContent);
+			console.log(event.clipboardData.getData("text"))
+		}
+		});
+
+		function back(){
+						document.getElementById('selectBack').style.display='flex'
+			document.getElementById("out").style.display = "none"
+		}
+
+		function download() {
+			var canvas = document.getElementById("picOut");
+			var link = document.createElement('a');
+			link.href = canvas.toDataURL(); // Convert the canvas to a data URL
+			link.download = 'Lapsus.jpg'; // Set the filename for the download //TODO
+			link.click(); // Trigger the download
+		}
+	</script>
+</body> 
+
+</html>
