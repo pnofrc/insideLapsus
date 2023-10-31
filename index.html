@@ -275,30 +275,47 @@
 			document.getElementById("out").style.display = "none"
 		}
 
+		
 		function download() {
-			var canvas = document.getElementById("picOut");
+    var canvas = document.getElementById("picOut");
 
-			// Check if the HTML element exists
-			if (!canvas) {
-				alert("No image to download. Please merge an image first.");
-				return;
-			}
+    // Check if the HTML element exists
+    if (!canvas) {
+        alert("No image to download or share. Please merge an image first.");
+        return;
+    }
 
-			// Ask the user where to save the file
-			var fileName = prompt("Enter the file name (e.g., Lapsus.png):");
-			if (fileName) {
-				// Convert the canvas to a data URL
-				var dataURL = canvas.toDataURL('png');
+    // Ask the user whether to download or share the image
+    var choice = prompt("Do you want to (1) download or (2) share the image on Instagram or other apps? Enter 1 or 2:");
 
-				// Create a temporary anchor element
-				var link = document.createElement('a');
-				link.href = dataURL;
-				link.download = fileName; // Set the filename for the download
-
-				// Trigger the download
-				link.click();
-			}
-		}
+    if (choice === "1") {
+        // Download the image
+        var fileName = prompt("Enter the file name (e.g., Lapsus.png):");
+        if (fileName) {
+            var dataURL = canvas.toDataURL('image/png');
+            var link = document.createElement('a');
+            link.href = dataURL;
+            link.download = fileName;
+            link.click();
+        }
+    } else if (choice === "2" && navigator.share) {
+        // Share the image
+        var dataURL = canvas.toDataURL('image/png');
+        navigator.share({
+            title: 'Lapsus Image',
+            text: 'Check out my Lapsus image!',
+            url: dataURL,
+        })
+        .then(() => {
+            console.log('Successfully shared the image');
+        })
+        .catch((error) => {
+            console.error('Share failed:', error);
+        });
+    } else {
+        alert('Invalid choice or sharing is not supported in your browser. You can download the image instead.');
+    }
+}
 
 	</script>
 </body>
