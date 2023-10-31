@@ -275,7 +275,6 @@
 			document.getElementById("out").style.display = "none"
 		}
 
-		
 		function download() {
     var canvas = document.getElementById("picOut");
 
@@ -285,35 +284,25 @@
         return;
     }
 
-    // Ask the user whether to download or share the image
-    var choice = prompt("Do you want to (1) download or (2) share the image on Instagram or other apps? Enter 1 or 2:");
-
-    if (choice === "1") {
-        // Download the image
-        var fileName = prompt("Enter the file name (e.g., Lapsus.png):");
-        if (fileName) {
-            var dataURL = canvas.toDataURL('image/png');
-            var link = document.createElement('a');
-            link.href = dataURL;
-            link.download = fileName;
-            link.click();
-        }
-    } else if (choice === "2" && navigator.share) {
-        // Share the image
+    if (navigator.share) {
+        // Share the image using the Web Share API
         var dataURL = canvas.toDataURL('image/png');
         navigator.share({
-            title: 'Lapsus Image',
-            text: 'Check out my Lapsus image!',
-            url: dataURL,
+            files: [new File([dataURL], "Lapsus.png", { type: "image/png" })],
         })
         .then(() => {
             console.log('Successfully shared the image');
         })
         .catch((error) => {
             console.error('Share failed:', error);
+            alert('Sharing failed. You can download the image instead.');
         });
     } else {
-        alert('Invalid choice or sharing is not supported in your browser. You can download the image instead.');
+        // If the browser doesn't support the Web Share API, provide a download link
+        var link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'Lapsus.png';
+        link.click();
     }
 }
 
