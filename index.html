@@ -82,10 +82,9 @@
 
 		<div>
 			<p>
-				Puoi scaricare l'immagine, o cambiare lo sfondo. Puoi salvarla nella galleria o aprirla tramite l'app di
-				instagram.<br>
+				Puoi condividere o scaricare l'immagine, o cambiare lo sfondo. Puoi salvarla nella galleria o aprirla tramite social media.<br>
 				Se vuoi condividerla non esitare a usare i nostri tag!<br><br>
-				Puoi cliccare nel riquadro per copiare e incollare.
+				Puoi cliccare nel riquadro in basso per copiare e incollare.
 			</p>
 			<p id="copying">
 				#insidelapsus #preziosine #openday
@@ -93,8 +92,8 @@
 		</div>
 
 		<div class="commands tre">
-			<button onclick="download()">Scarica 🔔</button>
-			<button onclick="share()">Condividi 👾</button>
+			<!-- <button onclick="download()">Scarica 🔔</button> -->
+			<button onclick="share()">Condividi 🔔</button>
 			<button onclick="back()">Cambia 🔄</button>
 		</div>
 
@@ -236,13 +235,13 @@
 			document.getElementById("out").style.display = "none"
 		}
 
-		function download() {
-			var canvas = document.getElementById("picOut");
-			var link = document.createElement('a');
-			link.href = canvas.toDataURL(); // Convert the canvas to a data URL
-			link.download = 'Lapsus.jpg'; // Set the filename for the download //TODO
-			link.click(); // Trigger the download
-		}
+		// function download() {
+		// 	var canvas = document.getElementById("picOut");
+		// 	var link = document.createElement('a');
+		// 	link.href = canvas.toDataURL(); // Convert the canvas to a data URL
+		// 	link.download = 'Lapsus.jpg'; // Set the filename for the download //TODO
+		// 	link.click(); // Trigger the download
+		// }
 
 
 		function share() {
@@ -267,7 +266,7 @@
 					console.error('Share failed:', error);
 				});
 			} else {
-				alert('La condivisione non è supportata su questo browser. Utilizza il pulsante "Scarica!" per salvare l\'immagine manualmente.');
+				alert('La condivisione non è supportata su questo browser. 😤 ');
 			}
 		}
 
