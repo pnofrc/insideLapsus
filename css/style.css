@@ -143,6 +143,8 @@ input[type=file] {
 
 #buffering{
     display: none;
+    position:relative;
+    z-index: 99999;
 }
 #copying {
     border: solid 1px black;
