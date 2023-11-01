@@ -141,7 +141,9 @@ input[type=file] {
 }
 
 
-
+#buffering{
+    display: none;
+}
 #copying {
     border: solid 1px black;
     padding: 1rem;

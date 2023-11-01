@@ -77,6 +77,9 @@
 
 
 	<div id="out" class="container">
+		<div id="buffering">
+			ASPETTA
+		</div>
 
 		<canvas id="picOut"></canvas>
 
@@ -167,6 +170,8 @@
 		// produces the resultant image as output 
 		// Implementation of Green Screen Algorithm 
 		function merge() {
+
+			document.getElementById('buffering').display = 'block'
 			// Load the selected background image
 			backimg("background/" + bckPics[swiper.realIndex]);
 
@@ -199,11 +204,15 @@
 				}
 
 				outputImage.drawTo(picOut);
+				
 			} catch (error) {
 				alert("ERRORE! Ricomincia o rifondi 🤕");
 				return;
 			}
 
+			if (outputImage){
+				document.getElementById('buffering').display = 'none'
+			}
 			document.getElementById("selectBack").style.display = "none";
 			document.getElementById("out").style.display = "block";
 		}
