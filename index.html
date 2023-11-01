@@ -236,64 +236,49 @@
 			document.getElementById("out").style.display = "none"
 		}
 
-		// function download() {
-		// 	var canvas = document.getElementById("picOut");
+		function download() {
+			var canvas = document.getElementById("picOut");
 
-		// 	// Check if the HTML element exists
-		// 	if (!canvas) {
-		// 		alert("Non c'è nessuna immagine da scaricare... 😤");
-		// 		return;
-		// 	}
+			// Check if the HTML element exists
+			if (!canvas) {
+				alert("Non c'è nessuna immagine da scaricare... 😤");
+				return;
+			}
 
-		// 	if (navigator.share) {
-		// 		// Share the image using the Web Share API
-		// 		var dataURL = canvas.toDataURL('image/png');
-		// 		navigator.share({
-		// 			files: [new File([dataURL], "Lapsus.png", { type: "image/png" })],
-		// 		})
-		// 		.then(() => {
-		// 			console.log('Successfully shared the image');
-		// 		})
-		// 		.catch((error) => {
-		// 			console.error('Share failed:', error);
-		// 			alert('Qualcosa è andato storto 🫢');
-		// 		});
-		// 	} else {
-		// 		// If the browser doesn't support the Web Share API, provide a download link
-		// 		var link = document.createElement('a');
-		// 		link.href = dataURL;
-		// 		link.download = 'Lapsus.png';
-		// 		link.click();
-		// 	}
-		// }
+			// If the browser doesn't support the Web Share API, provide a download link
+			var link = document.createElement('a');
+			link.href = dataURL;
+			link.download = 'Lapsus.png';
+			link.click();
+		}
 
 
 		function share() {
-    var canvas = document.getElementById("picOut");
+			var canvas = document.getElementById("picOut");
 
-    // Check if the HTML element exists
-    if (!canvas) {
-        alert("Non c'è nessuna immagine da condividere... 😤");
-        return;
-    }
+			// Check if the HTML element exists
+			if (!canvas) {
+				alert("Non c'è nessuna immagine da condividere... 😤");
+				return;
+			}
 
-    if (navigator.share) {
-        // Share the image using the Web Share API
-        var dataURL = canvas.toDataURL('image/png');
-        navigator.share({
-            files: [new File([dataURL], "Lapsus.png", { type: "image/png" })],
-        })
-        .then(() => {
-            console.log('Successfully shared the image');
-        })
-        .catch((error) => {
-            console.error('Share failed:', error);
-            alert('Qualcosa è andato storto 🫢');
-        });
-    } else {
-        alert('La condivisione non è supportata su questo browser. Utilizza il pulsante "Scarica!" per salvare l\'immagine manualmente.');
-    }
-}
+			if (navigator.share) {
+				// Share the image using the Web Share API
+				var dataURL = canvas.toDataURL('image/png');
+				navigator.share({
+					files: [new File([dataURL], "Lapsus.png", { type: "image/png" })],
+				})
+				.then(() => {
+					console.log('Successfully shared the image');
+				})
+				.catch((error) => {
+					console.error('Share failed:', error);
+					alert('Qualcosa è andato storto 🫢');
+				});
+			} else {
+				alert('La condivisione non è supportata su questo browser. Utilizza il pulsante "Scarica!" per salvare l\'immagine manualmente.');
+			}
+		}
 
 	</script>
 </body>
