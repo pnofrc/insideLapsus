@@ -5,12 +5,13 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>
-		InsideLapsus
-	</title>
-	<meta name="description" content="App del Liceo Artistico Preziosissimo Sangue ;)">
+
+	<title>InsideLapsus</title>
+
+	<meta name="description" content="App del Liceo Artistico Preziosissimo Sangue 👽">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="">
+
 	<!-- <script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.js"></script> -->
 	<script src="./js/heic2any.js"></script>
 	<!-- <script src="https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js"> </script> -->
@@ -126,55 +127,17 @@
 
 			var file = fileInput.files[0];
 
-			// if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
-				const reader = new FileReader();
+			const reader = new FileReader();
 
-				reader.onload = function () {
-					const dataURL = reader.result;
-					imgFG = new SimpleImage(dataURL);
-					canvas.style.display = "block";
-					imgFG.drawTo(canvas);
-					commands.style.display = "flex";
-				};
+			reader.onload = function () {
+				const dataURL = reader.result;
+				imgFG = new SimpleImage(dataURL);
+				canvas.style.display = "block";
+				imgFG.drawTo(canvas);
+				commands.style.display = "flex";
+			};
 
-				reader.readAsDataURL(file);
-
-			// } else if (file && file.type === 'image/heic') {
-			// 	heic2any({ blob: file })
-			// 		.then(function (resultBlob) {
-			// 			const reader = new FileReader();
-
-			// 			reader.onload = function () {
-			// 				const dataURL = reader.result;
-			// 				let imgNew = new Image();
-
-			// 				imgNew.onload = function () {
-			// 					canvas.style.display = "block";
-			// 					const canvasContext = canvas.getContext('2d');
-			// 					canvas.width = imgNew.width;
-			// 					canvas.height = imgNew.height;
-			// 					canvasContext.drawImage(imgNew, 0, 0);
-			// 					commands.style.display = "flex";
-			// 				};
-
-			// 				imgNew.src = dataURL;
-			// 				imgFG = new SimpleImage(dataURL);
-			// 			};
-
-					// 	reader.readAsDataURL(resultBlob);
-
-
-
-
-						// canvas.style.display = "block";
-
-					// })
-					// .catch(function (error) {
-					// 	console.error('HEIC conversion failed: ', error);
-					// });
-
-
-			// }
+			reader.readAsDataURL(file);
 
 			fileInput.style.display = "none"
 			shooting.style.display = "none"
@@ -237,16 +200,13 @@
 
 				outputImage.drawTo(picOut);
 			} catch (error) {
-				alert("ERRORE! Ricomincia o rifondi :(");
+				alert("ERRORE! Ricomincia o rifondi 🤕");
 				return;
 			}
 
 			document.getElementById("selectBack").style.display = "none";
 			document.getElementById("out").style.display = "block";
 		}
-
-
-
 
 
 		function randomSlide() {
@@ -276,35 +236,35 @@
 		}
 
 		function download() {
-    var canvas = document.getElementById("picOut");
+			var canvas = document.getElementById("picOut");
 
-    // Check if the HTML element exists
-    if (!canvas) {
-        alert("No image to download or share. Please merge an image first.");
-        return;
-    }
+			// Check if the HTML element exists
+			if (!canvas) {
+				alert("Non c'è nessuna immagine da scaricare... 😤");
+				return;
+			}
 
-    if (navigator.share) {
-        // Share the image using the Web Share API
-        var dataURL = canvas.toDataURL('image/png');
-        navigator.share({
-            files: [new File([dataURL], "Lapsus.png", { type: "image/png" })],
-        })
-        .then(() => {
-            console.log('Successfully shared the image');
-        })
-        .catch((error) => {
-            console.error('Share failed:', error);
-            alert('Sharing failed. You can download the image instead.');
-        });
-    } else {
-        // If the browser doesn't support the Web Share API, provide a download link
-        var link = document.createElement('a');
-        link.href = dataURL;
-        link.download = 'Lapsus.png';
-        link.click();
-    }
-}
+			if (navigator.share) {
+				// Share the image using the Web Share API
+				var dataURL = canvas.toDataURL('image/png');
+				navigator.share({
+					files: [new File([dataURL], "Lapsus.png", { type: "image/png" })],
+				})
+				.then(() => {
+					console.log('Successfully shared the image');
+				})
+				.catch((error) => {
+					console.error('Share failed:', error);
+					alert('Qualcosa è andato storto 🫢');
+				});
+			} else {
+				// If the browser doesn't support the Web Share API, provide a download link
+				var link = document.createElement('a');
+				link.href = dataURL;
+				link.download = 'Lapsus.png';
+				link.click();
+			}
+		}
 
 	</script>
 </body>
