@@ -32,7 +32,7 @@
 	<div id="cameraInput" class="container">
 
 		<div class="hide-input">
-			<input type="file" accept="image/*" capture="camera"  id="fgFile" multiple="false" onChange="frontimg()">
+			<input type="file" accept="image/*" id="fgFile" multiple="false" onChange="frontimg()">
 			<button>Scatta la foto!</button>
 		</div>
 
@@ -67,10 +67,10 @@
 
 
 		<div class="commands due">
-			<button onclick="randomSlide()">Sfondo random</button>
+			<button onclick="randomSlide()">Random 🎲</button>
 			<button
-				onclick="document.getElementById('cameraInput').style.display='flex'; document.getElementById('selectBack').style.display='none'">Indietro</button>
-			<button onClick="merge()">Fondi!</button>
+				onclick="document.getElementById('cameraInput').style.display='flex'; document.getElementById('selectBack').style.display='none'">Indietro 🔙</button>
+			<button onClick="merge()">Fondi 🛹</button>
 		</div>
 	</div>
 
@@ -93,8 +93,9 @@
 		</div>
 
 		<div class="commands tre">
-			<button onclick="download()">Scarica!</button>
-			<button onclick="back()">Cambia..</button>
+			<button onclick="download()">Scarica 🔔</button>
+			<button onclick="share()">Condividi 👾</button>
+			<button onclick="back()">Cambia 🔄</button>
 		</div>
 
 	</div>
@@ -174,27 +175,27 @@
 			var picOut = document.getElementById("picOut");
 
 			try {
-				// Calculate the scaling factor based on height
-				var scale = imgBG.getHeight() / imgFG.getHeight();
+				// Get the dimensions of the foreground and background images
+				var fgWidth = imgFG.getWidth();
+				var fgHeight = imgFG.getHeight();
+				var bgWidth = imgBG.getWidth();
+				var bgHeight = imgBG.getHeight();
 
-				// Resize the foreground image to match the background height
-				var newWidth = Math.round(imgFG.getWidth() * scale);
-				imgFG.setSize(newWidth, imgBG.getHeight());
-
-				var outputImage = new SimpleImage(imgBG.getWidth(), imgBG.getHeight());
+				// Create a new SimpleImage with dimensions of the foreground image
+				var outputImage = new SimpleImage(fgWidth, fgHeight);
 
 				for (var pixel of imgFG.values()) {
 					if (pixel.getGreen() > pixel.getRed() + pixel.getBlue()) {
-						var x = Math.round((pixel.getX() / imgFG.getWidth()) * imgBG.getWidth());
+						var x = pixel.getX();
 						var y = pixel.getY();
-						var newPixel = imgBG.getPixel(x, y);
-						outputImage.setPixel(x, y, newPixel);
+						// Ensure that x and y are within the background image's dimensions
+						if (x < bgWidth && y < bgHeight) {
+							var newPixel = imgBG.getPixel(x, y);
+							outputImage.setPixel(x, y, newPixel);
+						}
 					} else {
-						outputImage.setPixel(
-							Math.round((pixel.getX() / imgFG.getWidth()) * imgBG.getWidth()),
-							pixel.getY(),
-							pixel
-						);
+						// Set the pixel from the foreground image as is
+						outputImage.setPixel(pixel.getX(), pixel.getY(), pixel);
 					}
 				}
 
@@ -235,36 +236,64 @@
 			document.getElementById("out").style.display = "none"
 		}
 
-		function download() {
-			var canvas = document.getElementById("picOut");
+		// function download() {
+		// 	var canvas = document.getElementById("picOut");
 
-			// Check if the HTML element exists
-			if (!canvas) {
-				alert("Non c'è nessuna immagine da scaricare... 😤");
-				return;
-			}
+		// 	// Check if the HTML element exists
+		// 	if (!canvas) {
+		// 		alert("Non c'è nessuna immagine da scaricare... 😤");
+		// 		return;
+		// 	}
 
-			if (navigator.share) {
-				// Share the image using the Web Share API
-				var dataURL = canvas.toDataURL('image/png');
-				navigator.share({
-					files: [new File([dataURL], "Lapsus.png", { type: "image/png" })],
-				})
-				.then(() => {
-					console.log('Successfully shared the image');
-				})
-				.catch((error) => {
-					console.error('Share failed:', error);
-					alert('Qualcosa è andato storto 🫢');
-				});
-			} else {
-				// If the browser doesn't support the Web Share API, provide a download link
-				var link = document.createElement('a');
-				link.href = dataURL;
-				link.download = 'Lapsus.png';
-				link.click();
-			}
-		}
+		// 	if (navigator.share) {
+		// 		// Share the image using the Web Share API
+		// 		var dataURL = canvas.toDataURL('image/png');
+		// 		navigator.share({
+		// 			files: [new File([dataURL], "Lapsus.png", { type: "image/png" })],
+		// 		})
+		// 		.then(() => {
+		// 			console.log('Successfully shared the image');
+		// 		})
+		// 		.catch((error) => {
+		// 			console.error('Share failed:', error);
+		// 			alert('Qualcosa è andato storto 🫢');
+		// 		});
+		// 	} else {
+		// 		// If the browser doesn't support the Web Share API, provide a download link
+		// 		var link = document.createElement('a');
+		// 		link.href = dataURL;
+		// 		link.download = 'Lapsus.png';
+		// 		link.click();
+		// 	}
+		// }
+
+
+		function share() {
+    var canvas = document.getElementById("picOut");
+
+    // Check if the HTML element exists
+    if (!canvas) {
+        alert("Non c'è nessuna immagine da condividere... 😤");
+        return;
+    }
+
+    if (navigator.share) {
+        // Share the image using the Web Share API
+        var dataURL = canvas.toDataURL('image/png');
+        navigator.share({
+            files: [new File([dataURL], "Lapsus.png", { type: "image/png" })],
+        })
+        .then(() => {
+            console.log('Successfully shared the image');
+        })
+        .catch((error) => {
+            console.error('Share failed:', error);
+            alert('Qualcosa è andato storto 🫢');
+        });
+    } else {
+        alert('La condivisione non è supportata su questo browser. Utilizza il pulsante "Scarica!" per salvare l\'immagine manualmente.');
+    }
+}
 
 	</script>
 </body>
