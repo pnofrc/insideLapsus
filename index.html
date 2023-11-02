@@ -97,7 +97,7 @@
 
 		<div class="commands tre">
 			<!-- <button onclick="download()">Scarica 🔔</button> -->
-			<button onclick="share()">Condividi 🔔</button>
+			<button onclick="download()">Condividi 🔔</button>
 			<button onclick="back()">Cambia 🔄</button>
 		</div>
 
@@ -342,6 +342,14 @@
 			}
 		}
 
+
+		function download() {
+			var canvas = document.getElementById("picOut");
+			var link = document.createElement('a');
+			link.href = canvas.toDataURL(); // Convert the canvas to a data URL
+			link.download = 'Lapsus.jpg'; // Set the filename for the download //TODO
+			link.click(); // Trigger the download
+		}
 	</script>
 </body>
 
