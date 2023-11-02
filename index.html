@@ -277,6 +277,10 @@
 					console.error('Share failed:', error);
 				});
 			} else {
+				var link = document.createElement('a');
+				link.href = canvas.toDataURL(); // Convert the canvas to a data URL
+				link.download = 'Lapsus.jpg'; // Set the filename for the download //TODO
+				link.click(); // Trigger the download
 				alert('La condivisione non è supportata su questo browser. 😤 ');
 			}
 		}
