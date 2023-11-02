@@ -75,7 +75,7 @@
 	</div>
 
 	<div id="buffering">
-		ASPETTA
+		<img src="./buffering.gif" alt="">
 	</div>
 
 
@@ -172,7 +172,7 @@
 		// Implementation of Green Screen Algorithm 
 		function merge() {
 
-			document.getElementById('buffering').display = 'block'
+			document.getElementById('buffering').style.display = 'flex'
 			// Load the selected background image
 			backimg("background/" + bckPics[swiper.realIndex]);
 
@@ -207,12 +207,13 @@
 				outputImage.drawTo(picOut);
 				
 			} catch (error) {
+				document.getElementById('buffering').style.display = 'none'
 				alert("ERRORE! Ricomincia o rifondi 🤕");
 				return;
 			}
 
 			if (outputImage){
-				document.getElementById('buffering').display = 'none'
+				document.getElementById('buffering').style.display = 'none'
 			}
 			document.getElementById("selectBack").style.display = "none";
 			document.getElementById("out").style.display = "block";
@@ -265,9 +266,9 @@
 
 			if (navigator.share) {
 				// Share the image using the Web Share API
-				var dataURL = canvas.toDataURL('image/png');
+				var dataURL = canvas.toDataURL('image/jpg');
 				navigator.share({
-					files: [new File([dataURL], "Lapsus.png", { type: "image/png" })],
+					files: [new File([dataURL], "Lapsus.jpg", { type: "image/jpg" })],
 				})
 				.then(() => {
 					console.log('Successfully shared the image');

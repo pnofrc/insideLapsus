@@ -142,9 +142,20 @@ input[type=file] {
 
 
 #buffering{
-    display: none;
-    position:relative;
+    
     z-index: 99999;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    top: 0;
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+#bufferin img{
+    height: 150px;
 }
 #copying {
     border: solid 1px black;
