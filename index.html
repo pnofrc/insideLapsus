@@ -36,7 +36,7 @@
 			<button>Scatta la foto!</button>
 		</div>
 
-		<canvas id="pic1"></canvas>
+		<canvas id="pic1" width="1080" height="1920"></canvas>
 
 
 		<div class="commands uno">
@@ -122,33 +122,84 @@
 		var imgBG = null;
 		var currentBackground = null
 
-		// This function takes forward image as input 
+
 		function frontimg() {
-			var shooting = document.querySelector(".hide-input");
-			var commands = document.querySelector(".commands.uno");
-			var fileInput = document.getElementById("fgFile");
-			var canvas = document.getElementById("pic1");
+    var shooting = document.querySelector(".hide-input");
+    var commands = document.querySelector(".commands.uno");
+    var fileInput = document.getElementById("fgFile");
+    var canvas = document.getElementById("pic1");
 
-			var file = fileInput.files[0];
+    var file = fileInput.files[0];
+    var img = new Image();
 
-			const reader = new FileReader();
+    img.onload = function () {
+        // Calculate the new dimensions while maintaining the aspect ratio
+        var newWidth = 1080;
+        var aspectRatio = img.width / img.height;
+        var newHeight = newWidth / aspectRatio;
 
-			reader.onload = function () {
-				const dataURL = reader.result;
-				imgFG = new SimpleImage(dataURL);
-				canvas.style.display = "block";
-				imgFG.drawTo(canvas);
-				commands.style.display = "flex";
-			};
+        // Create a canvas to resize the image
+        var tempCanvas = document.createElement("canvas");
+        tempCanvas.width = newWidth;
+        tempCanvas.height = newHeight;
+        var tempContext = tempCanvas.getContext("2d");
 
-			reader.readAsDataURL(file);
+        // Draw the resized image on the temporary canvas
+        tempContext.drawImage(img, 0, 0, newWidth, newHeight);
 
-			fileInput.style.display = "none"
-			shooting.style.display = "none"
+        // Convert the canvas to a data URL
+        var dataURL = tempCanvas.toDataURL("image/jpeg");
 
-			canvas.style.display = "block"
-			commands.style.display = "flex"
-		}
+        // Create a SimpleImage from the data URL
+        imgFG = new SimpleImage(dataURL);
+
+        canvas.style.display = "block";
+        imgFG.drawTo(canvas);
+        commands.style.display = "flex";
+    };
+
+    // Set the image source to the selected file
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+
+    fileInput.style.display = "none";
+    shooting.style.display = "none";
+    canvas.style.display = "block";
+    commands.style.display = "flex";
+}
+
+
+		// This function takes forward image as input 
+		// function frontimg() {
+		// 	var shooting = document.querySelector(".hide-input");
+		// 	var commands = document.querySelector(".commands.uno");
+		// 	var fileInput = document.getElementById("fgFile");
+		// 	var canvas = document.getElementById("pic1");
+
+		// 	var file = fileInput.files[0];
+
+		// 	const reader = new FileReader();
+
+		// 	reader.onload = function () {
+		// 		const dataURL = reader.result;
+		// 		imgFG = new SimpleImage(dataURL);
+		// 		canvas.style.display = "block";
+		// 		imgFG.width = 1920;
+		// 		imgFG.drawTo(canvas);
+		// 		commands.style.display = "flex";
+		// 	};
+
+		// 	reader.readAsDataURL(file);
+
+		// 	fileInput.style.display = "none"
+		// 	shooting.style.display = "none"
+
+		// 	canvas.style.display = "block"
+		// 	commands.style.display = "flex"
+		// }
 
 
 
@@ -176,54 +227,55 @@
 		// produces the resultant image as output 
 		// Implementation of Green Screen Algorithm 
 		function merge() {
+    document.getElementById('buffering').style.display = 'flex';
 
-			document.getElementById('buffering').style.display = 'flex'
-			// Load the selected background image
-			backimg("background/" + bckPics[swiper.realIndex]);
+    // Load the selected background image
+    backimg("background/" + bckPics[swiper.realIndex]);
 
-			// Get the canvas for the output image
-			var picOut = document.getElementById("picOut");
+    // Get the canvas for the output image
+    var picOut = document.getElementById("picOut");
 
-			try {
-				// Get the dimensions of the foreground and background images
-				var fgWidth = imgFG.getWidth();
-				var fgHeight = imgFG.getHeight();
-				var bgWidth = imgBG.getWidth();
-				var bgHeight = imgBG.getHeight();
+    try {
+        // Get the dimensions of the foreground and background images
+        var fgWidth = imgFG.getWidth();
+        var fgHeight = imgFG.getHeight();
+        var bgWidth = imgBG.getWidth();
+        var bgHeight = imgBG.getHeight();
 
-				// Create a new SimpleImage with dimensions of the foreground image
-				var outputImage = new SimpleImage(fgWidth, fgHeight);
+        // Create a new SimpleImage with dimensions of the foreground image
+        var outputImage = new SimpleImage(fgWidth, fgHeight);
 
-				for (var pixel of imgFG.values()) {
-					if (pixel.getGreen() > pixel.getRed() + pixel.getBlue()) {
-						var x = pixel.getX();
-						var y = pixel.getY();
-						// Ensure that x and y are within the background image's dimensions
-						if (x < bgWidth && y < bgHeight) {
-							var newPixel = imgBG.getPixel(x, y);
-							outputImage.setPixel(x, y, newPixel);
-						}
-					} else {
-						// Set the pixel from the foreground image as is
-						outputImage.setPixel(pixel.getX(), pixel.getY(), pixel);
-					}
-				}
+        for (var pixel of imgFG.values()) {
+            if (pixel.getGreen() > pixel.getRed() + pixel.getBlue()) {
+                var x = pixel.getX();
+                var y = pixel.getY();
+                // Ensure that x and y are within the background image's dimensions
+                if (x < bgWidth && y < bgHeight) {
+                    var newX = Math.floor(x * bgWidth / fgWidth); // Resize x coordinate
+                    var newY = Math.floor(y * bgHeight / fgHeight); // Resize y coordinate
+                    var newPixel = imgBG.getPixel(newX, newY);
+                    outputImage.setPixel(x, y, newPixel);
+                }
+            } else {
+                // Set the pixel from the foreground image as is
+                outputImage.setPixel(pixel.getX(), pixel.getY(), pixel);
+            }
+        }
 
-				outputImage.drawTo(picOut);
-				
-			} catch (error) {
-				document.getElementById('buffering').style.display = 'none'
-				alert("ERRORE! Ricomincia o rifondi 🤕");
-				return;
-			}
+        outputImage.drawTo(picOut);
+    } catch (error) {
+        document.getElementById('buffering').style.display = 'none';
+        alert("ERRORE! Ricomincia o rifondi 🤕");
+        return;
+    }
 
-			if (outputImage){
-				document.getElementById('buffering').style.display = 'none'
-			}
-			document.getElementById("selectBack").style.display = "none";
-			document.getElementById("out").style.display = "block";
-		}
+    if (outputImage) {
+        document.getElementById('buffering').style.display = 'none';
+    }
 
+    document.getElementById("selectBack").style.display = "none";
+    document.getElementById("out").style.display = "block";
+}
 
 		function randomSlide() {
 			let rn = Math.floor(Math.random() * bckPics.length)
